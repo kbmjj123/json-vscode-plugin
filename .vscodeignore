@@ -1,0 +1,13 @@
+.github/**
+scripts/**
+src/**
+tests/**
+webview/**
+tsconfig.json
+vitest.config.ts
+esbuild.config.mjs
+pnpm-lock.yaml
+PUBLISH.md
+.gitignore
+**/*.map
+*.vsix

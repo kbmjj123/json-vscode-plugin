@@ -1,0 +1,149 @@
+{
+  "name": "json-toolbox",
+  "displayName": "JSON Toolbox",
+  "description": "Format, validate, convert and inspect JSON in VS Code. Local processing, no uploads.",
+  "version": "0.1.0",
+  "publisher": "kbmjj123",
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#0052D4",
+    "theme": "dark"
+  },
+  "qna": "https://github.com/kbmjj123/json-vscode-plugin/issues",
+  "license": "MIT",
+  "author": "kbmjj123",
+  "homepage": "https://jsontoolbox.cc",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kbmjj123/json-vscode-plugin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kbmjj123/json-vscode-plugin/issues"
+  },
+  "keywords": [
+    "json",
+    "formatter",
+    "validator",
+    "viewer",
+    "jsonpath",
+    "csv",
+    "yaml",
+    "json-viewer",
+    "json-tree",
+    "offline",
+    "client-side"
+  ],
+  "categories": [
+    "Formatters",
+    "Programming Languages",
+    "Other"
+  ],
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "main": "./dist/extension.js",
+  "scripts": {
+    "build": "node esbuild.config.mjs && node scripts/copy-assets.mjs",
+    "watch": "node esbuild.config.mjs --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "vscode:prepublish": "pnpm build",
+    "package": "vsce package --no-dependencies",
+    "publish:ms": "node scripts/publish.mjs ms",
+    "publish:ovsx": "node scripts/publish.mjs ovsx",
+    "publish:both": "node scripts/publish.mjs both"
+  },
+  "activationEvents": [
+    "onLanguage:json",
+    "onCustomEditor:jsonToolbox.jsonEditor",
+    "onCommand:jsonToolbox.format",
+    "onCommand:jsonToolbox.minify",
+    "onCommand:jsonToolbox.validate",
+    "onCommand:jsonToolbox.jsonToYaml",
+    "onCommand:jsonToolbox.yamlToJson",
+    "onCommand:jsonToolbox.toCsv",
+    "onCommand:jsonToolbox.jsonPath",
+    "onCommand:jsonToolbox.openPanel",
+    "onCommand:jsonToolbox.revertToBuiltin"
+  ],
+  "contributes": {
+    "commands": [
+      { "command": "jsonToolbox.format", "title": "JSON Toolbox: Format JSON" },
+      { "command": "jsonToolbox.minify", "title": "JSON Toolbox: Minify JSON" },
+      { "command": "jsonToolbox.validate", "title": "JSON Toolbox: Validate JSON" },
+      { "command": "jsonToolbox.jsonToYaml", "title": "JSON Toolbox: JSON to YAML" },
+      { "command": "jsonToolbox.yamlToJson", "title": "JSON Toolbox: YAML to JSON" },
+      { "command": "jsonToolbox.toCsv", "title": "JSON Toolbox: JSON to CSV" },
+      { "command": "jsonToolbox.jsonPath", "title": "JSON Toolbox: JSONPath Query" },
+      { "command": "jsonToolbox.openPanel", "title": "JSON Toolbox: Open in Editor Panel" },
+      { "command": "jsonToolbox.revertToBuiltin", "title": "JSON Toolbox: Reopen with Built-in Editor" }
+    ],
+    "customEditors": [
+      {
+        "viewType": "jsonToolbox.jsonEditor",
+        "displayName": "JSON Toolbox Editor",
+        "selector": [
+          { "filenamePattern": "*.json" },
+          { "language": "json" }
+        ],
+        "priority": "default"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "jsonToolbox.revertToBuiltin",
+          "when": "activeCustomEditorId == jsonToolbox.jsonEditor",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "JSON Toolbox",
+      "properties": {
+        "jsonToolbox.theme": {
+          "type": "string",
+          "enum": ["auto", "light", "dark"],
+          "default": "auto",
+          "description": "Editor colour theme."
+        },
+        "jsonToolbox.indent": {
+          "type": "string",
+          "enum": ["2", "4", "tab"],
+          "default": "2",
+          "description": "Indentation used by Format and by the editor."
+        },
+        "jsonToolbox.defaultView": {
+          "type": "string",
+          "enum": ["editor", "tree", "both", "table"],
+          "default": "both",
+          "description": "Default view when a JSON document is opened."
+        },
+        "jsonToolbox.locale": {
+          "type": "string",
+          "enum": ["auto", "en", "zh"],
+          "default": "auto",
+          "description": "UI language. 'auto' follows the VS Code display language (zh* -> Chinese, otherwise English)."
+        },
+        "jsonToolbox.imagePreview": {
+          "type": "boolean",
+          "default": true,
+          "description": "Load remote image URLs found in JSON values. Disable to block all third-party media requests."
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "@kbmjj123/json-editor": "^0.1.1",
+    "yaml": "^2.6.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.2.0",
+    "esbuild": "^0.24.2",
+    "ovsx": "^1.4.0",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8"
+  }
+}
